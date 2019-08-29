@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 import {
-    EMAIL_CHANGED, PASSWORD_CHANGED,
+    EMAIL_CHANGED, PASSWORD_CHANGED, LOGIN_FB,
     LOGIN_USER_SUCCESS, LOGIN_USER_FAIL, LOGIN_USER
 } from './types';
 export const emailChanged = (data) => {
@@ -29,6 +29,14 @@ export const loginUser = ({ email, password }) => {
                     .catch(() => loginUserFail(dispatch))
             })
 
+    }
+
+}
+
+export const loginWithFB = () => {
+    return (dispatch) => {
+        dispatch({ type: LOGIN_FB });
+        Actions.main();
     }
 
 }

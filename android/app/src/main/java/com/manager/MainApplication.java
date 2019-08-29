@@ -7,21 +7,33 @@ import com.facebook.react.PackageList;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
-//import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.shell.MainReactPackage;
+//import com.facebook.reactnative.androidsdk.FBSDKPackage;
+
+
 import com.facebook.soloader.SoLoader;
 
+import java.util.Arrays;
 import java.util.List;
+
 //Facebook login
-
-//import com.facebook.CallbackManager;
-
-//import com.facebook.reactnative.androidsdk.FBSDKPackage;
-//import com.facebook.appevents.AppEventsLogger;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.facebook.appevents.AppEventsLogger;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
+  private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
+
+  protected static CallbackManager getCallbackManager(){
+    return mCallbackManager;
+  }
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -31,17 +43,18 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      @SuppressWarnings("UnnecessaryLocalVariable")
-      List<ReactPackage> packages = new PackageList(this).getPackages();
-      // Packages that cannot be autolinked yet can be added manually here, for example:
-      // packages.add(new MyReactNativePackage());
-      return packages;
+      return Arrays.<ReactPackage>asList(
+              new MainReactPackage(),
+              new FBSDKPackage(),
+              new RNGestureHandlerPackage(),
+              new VectorIconsPackage()
+      );
     }
 
-    @Override
-    protected String getJSMainModuleName() {
-      return "index";
-    }
+ //   @Override
+ //   protected String getJSMainModuleName() {
+  //    return "index";
+  //  }
   };
 
   @Override

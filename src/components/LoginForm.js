@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser } from '../actions';
+import { emailChanged, passwordChanged, loginUser, loginWithFB } from '../actions';
+import { Actions } from 'react-native-router-flux';
 import { View, Text } from 'react-native';
-/* import { LoginManager } from 'react-native-fbsdk'; */
+import FBSDK, { LoginManager } from 'react-native-fbsdk';
+
 
 class LoginForm extends Component {
 
@@ -35,7 +37,6 @@ class LoginForm extends Component {
             return <Spinner />
         } else {
             return (
-
                 <Button onPress={this.loginUser.bind(this)}>Login</Button>
             )
 
@@ -43,20 +44,21 @@ class LoginForm extends Component {
         }
     }
 
-    /*     async loginFacebook() {
-            try {
-                let result = await LoginManager.logInWithPermissions(['public_profile']);
+    loginFacebook() {
+        console.log('Inside');
+        LoginManager.logInWithPermissions(['public_profile'])
+            .then(result => {
                 if (result.isCancelled) {
                     alert('Login was cancelled')
                 } else {
+                    console.log('Hurray');
                     alert('login was successful with permissions: ' + result.grantedPermissions.toString())
+                    /* Actions.main(); */
                 }
-    
-    
-            } catch (error) {
+            }, error => {
                 alert('Login failed with error - ', error);
-            }
-        } */
+            })
+    }
     render() {
         const { email, password } = this.props;
         return (
@@ -71,12 +73,13 @@ class LoginForm extends Component {
                 </CardSection>
                 {this.renderError()}
                 <CardSection>
-
                     {this.renderButton()}
+
                 </CardSection>
+
                 <CardSection>
 
-                    <Button /* onPress={this.loginFacebook} */>Login With Facebook</Button>
+                    <Button onPress={this.loginFacebook.bind(this)}>Login With Facebook</Button>
                 </CardSection>
             </Card>
         );
@@ -100,4 +103,4 @@ const mapStateToProps = state => {
         loading
     }
 }
-export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })(LoginForm);
+export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser, loginWithFB })(LoginForm);
